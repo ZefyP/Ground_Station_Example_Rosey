@@ -1,15 +1,16 @@
 /*
-   RadioLib SX127x Receive Example
+Creator: Zefy Pissaki
+RadioLib SX1276 Receive 
 
-   This example listens for LoRa transmissions from multiple SX1276 Lora modules.
-   To successfully receive data, the following settings have to be the same
-   on both transmitter and receiver:
-    - carrier frequency
-    - bandwidth
-    - spreading factor
-    - coding rate
-    - sync word
-    - preamble length
+This example listens for LoRa transmissions from multiple SX1276 Lora modules.
+To successfully receive data, the following settings have to be the same
+on both transmitter and receiver:
+- carrier frequency
+- bandwidth
+- spreading factor
+- coding rate
+- sync word
+- preamble length
 */
 
 // include the library
@@ -18,12 +19,12 @@
 
 // Create Modules for the number of student radios you expect
 
-// SX1278 has the following connections:
-// NSS pin:   10
-// DIO0 pin:  2
-// RESET pin: 9
-// DIO1 pin:  3
-SX1278 radio = new Module(10, 2, 9, 3);
+// SX1276 has the following connections:
+// NSS pin:   18
+// DIO0 pin:  26
+// RESET pin: 14
+// DIO1 pin:  not found
+SX1278 radio = new Module(18, 26, 14);
 
 
 // SET YOUR SYNC WORD
@@ -34,16 +35,18 @@ String str;
 void setup() {
     Serial.begin(115200);
 
-    // initialize the radio chip SX1276 with default settings
-    Serial.print(F("[SX1278] Initialising ... "));
+    // initialise the radio chip SX1276 with default settings
+    Serial.print(F("[SX1276] Initialising ... "));
     state = radio.begin();
 }
 
 void loop() {
 
-    // Sweep every millisecond for 15 places (password = ('A','P'))
-//    my_password = char((millis()%15)+ 65); // 65 is the Decimal value of char A from ASCII table 
-    my_password = 65;
+    // Every 10 milliseconds divide with 16 places, obtaining an incremental step. 
+    // The remaining will be added to the decimal value 65 (of the char: 'A').  
+    // This results in a sweeped sync word setting from 65(char : 'A') to 80 (char: 'P')/
+    my_password = char((millis()/10%16)+ 65); // 65 is the Decimal value of char A from ASCII table 
+
     
     Serial.println(char(my_password));
     if (radio.setSyncWord(my_password) != RADIOLIB_ERR_NONE) { 
@@ -58,7 +61,7 @@ void loop() {
     Serial.println(F("Initialisation success!"));
     } else {
     Serial.print(F("failed, state code "));
-    Serial.println(state);
+    Serial.println(state); // in the future add message for the rest of the error codes 
     while (true);
     }
 
@@ -73,24 +76,24 @@ void loop() {
       Serial.println(F("success!"));
   
       // print the data of the packet
-      Serial.print(F("[SX1278] Data:\t\t\t"));
+      Serial.print(F("[SX1276] Data:\t\t\t"));
       Serial.println(str);
   
       // print the RSSI (Received Signal Strength Indicator)
       // of the last received packet
-      Serial.print(F("[SX1278] RSSI:\t\t\t"));
+      Serial.print(F("[SX1276] RSSI:\t\t\t"));
       Serial.print(radio.getRSSI());
       Serial.println(F(" dBm"));
   
       // print the SNR (Signal-to-Noise Ratio)
       // of the last received packet
-      Serial.print(F("[SX1278] SNR:\t\t\t"));
+      Serial.print(F("[SX1276] SNR:\t\t\t"));
       Serial.print(radio.getSNR());
       Serial.println(F(" dB"));
   
       // print frequency error
       // of the last received packet
-      Serial.print(F("[SX1278] Frequency error:\t"));
+      Serial.print(F("[SX1276] Frequency error:\t"));
       Serial.print(radio.getFrequencyError());
       Serial.println(F(" Hz"));
   
