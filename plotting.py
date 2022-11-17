@@ -4,7 +4,7 @@ import matplotlib.animation as animation
 fig = plt.figure()
 ax = fig.add_subplot(1,1,1)
 
-file_data = open("datain.txt","r").read()
+file_data = open("data.txt","r").read()
 dataArray = file_data.split('\n')
 time = []
 distance = []
