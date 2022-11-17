@@ -1,3 +1,7 @@
+"""
+Created on Wed 16 Nov 2022
+@author: Zefy Pissaki | zpissaki@gmail.com 
+"""
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 

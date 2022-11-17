@@ -1,3 +1,7 @@
+"""
+Created on Wed 16 Nov 2022
+@author: Zefy Pissaki | zpissaki@gmail.com 
+"""
 import time
 import serial # import serial library
 from string import digits
